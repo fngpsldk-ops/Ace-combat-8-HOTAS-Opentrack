@@ -1,0 +1,3 @@
+* text=auto
+# cmd는 LF 줄바꿈 bat를 잘못 읽는 경우가 있다 → 항상 CRLF로 내보낸다
+*.bat text eol=crlf

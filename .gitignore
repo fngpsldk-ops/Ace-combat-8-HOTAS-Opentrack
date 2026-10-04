@@ -1,0 +1,24 @@
+# 개인 설정 (사용자마다 다름)
+config.json
+config.json.tmp
+language.txt
+
+# 빌드 결과·임시 파일 (zip은 GitHub Releases에 올린다)
+dist/
+_tmp/
+__pycache__/
+*.pyc
+
+# 개인용 실행 파일
+1_설정마법사.bat
+2_브리지실행.bat
+
+# AI 에이전트 작업 기록 (로컬 전용)
+AGENTS.md
+CLAUDE.md
+AI_CONTEXT.md
+AI_WORKLOG.md
+AI_WORKLOG_ARCHIVE_*.md
+
+# Nexus 페이지 원고 (로컬 전용)
+nexus_description.txt
