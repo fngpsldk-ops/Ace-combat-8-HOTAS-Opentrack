@@ -13,7 +13,7 @@ import vgamepad as vg
 
 from ac8_i18n import T
 from ac8_common import (CONFIG_PATH, VERSION, clamp, find_device, init_pygame, load_config, open_all,
-                        pygame, rescaled_deadzone, signed_power, split_throttle)
+                        pygame, rescaled_deadzone, shape_axis, signed_power, split_throttle)
 
 B = vg.XUSB_BUTTON
 SIMPLE_BUTTONS = {
@@ -255,8 +255,9 @@ class Bridge:
 
     def step(self, dt):
         a, s = self.cfg["axes"], self.s
-        roll = rescaled_deadzone(self.axis(a["roll"]), s["roll_deadzone"])
-        pitch = rescaled_deadzone(self.axis(a["pitch"]), s["pitch_deadzone"])
+        g, e, adz = s["stick_gain"], s["stick_exponent"], s["stick_anti_deadzone"]
+        roll = shape_axis(self.axis(a["roll"]), s["roll_deadzone"], g, e, adz)
+        pitch = shape_axis(self.axis(a["pitch"]), s["pitch_deadzone"], g, e, adz)
         yaw = self.axis(a.get("yaw"))
         levers = [self.axis(lv) for lv in a.get("throttle", []) if lv]
         lt, rt = split_throttle(sum(levers) / len(levers), self.cal) if levers else (0.0, 0.0)
@@ -358,6 +359,7 @@ class Bridge:
         ok = all(self.devs.get(a) for a in self.needed_aliases())
         last = time.perf_counter()
         last_print = 0.0
+        loops, loop_t, loop_hz = 0, time.perf_counter(), 0  # 실제 루프 주기 표시용
         last_retry = 0.0
         last_reload = now = time.perf_counter()
         print("\n" + T("br_running") + "\n")
@@ -391,6 +393,10 @@ class Bridge:
                 time.sleep(0.05)
                 continue
             line = self.step(dt)
+            loops += 1
+            if now - loop_t >= 1.0:
+                loop_hz, loops, loop_t = loops, 0, now
+            line = f"{loop_hz}Hz " + line
             if now - last_print > 0.1:
                 last_print = now
                 print("\r" + line + "\x1b[K", end="", flush=True)  # 줄 끝까지 지우고 덮어쓰기
@@ -399,6 +405,16 @@ class Bridge:
 
 def main():
     os.system("")  # 콘솔 ANSI 제어문자 활성화
+    # Windows 기본 대기 정밀도(15.6ms)로는 200Hz 목표가 실제 64Hz로 돈다 → 1ms로 올린다(종료 시 원복)
+    winmm = ctypes.WinDLL("winmm")
+    winmm.timeBeginPeriod(1)
+    try:
+        run_bridge()
+    finally:
+        winmm.timeEndPeriod(1)
+
+
+def run_bridge():
     cfg = load_config()
     init_pygame()
     print(f"{T('br_title')}  v{VERSION}")

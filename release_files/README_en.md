@@ -1,4 +1,4 @@
-# AC8 HOTAS Bridge (with head tracking) v1.02
+# AC8 HOTAS Bridge (with head tracking) v1.03
 
 Use a **HOTAS (flight stick and throttle)** and **OpenTrack head tracking** in ACE COMBAT 8.
 
@@ -85,6 +85,7 @@ Connect all your devices first, then run it.
      - Behind neutral the lever drives **LT (decelerate)**, in front of it **RT (accelerate)**, proportionally to position.
      - At neutral the game holds its cruise speed.
 - **Head tracking · Sensitivity tab:** change values and click [Save]; a running bridge picks them up immediately.
+  - Roll/pitch response: **gain** (higher = full output with less deflection), **curve** (below 1 = sharper center), **anti-deadzone** (skips the game's deadzone)
 - Finally, click **[Save]**.
 
 ## Run
@@ -130,6 +131,7 @@ HidHide is made by the same developer as ViGEmBus (Nefarius). It hides the real 
 | Constantly accelerating or decelerating | Redo the throttle calibration |
 | Yaw activates with the twist centered | Raise "Yaw trigger point" |
 | Pitch or yaw reversed | Tick "Invert" on the Flight axes tab |
+| Flight controls feel sluggish | On the Sensitivity tab try "Roll/pitch gain" 1.2-1.3, "curve" 0.8 or "anti-deadzone" 0.1, one at a time |
 | Camera too sensitive or too sluggish | Change "Head full-scale angle". Smaller is more sensitive |
 | Small head moves do nothing, then the camera jumps | Raise "Head anti-deadzone" a little. It compensates for the game's own deadzone |
 | Camera overshoots and comes back when you stop | Lower "Lead" |

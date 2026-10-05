@@ -31,6 +31,9 @@ AXES = [
 NUMBERS = [
     ("settings", "roll_deadzone", "n_roll_dz", 0.0, 0.5, 0.01),
     ("settings", "pitch_deadzone", "n_pitch_dz", 0.0, 0.5, 0.01),
+    ("settings", "stick_gain", "n_stick_gain", 0.5, 3.0, 0.05),
+    ("settings", "stick_exponent", "n_stick_exp", 0.3, 3.0, 0.05),
+    ("settings", "stick_anti_deadzone", "n_stick_adz", 0.0, 0.6, 0.01),
     ("settings", "yaw_threshold", "n_yaw_th", 0.02, 0.9, 0.01),
     ("settings", "slew_deadzone", "n_slew_dz", 0.0, 0.9, 0.01),
     ("headtrack", "yaw_full_scale_deg", "n_yaw_fs", 10.0, 180.0, 1.0),

@@ -8,7 +8,7 @@ os.environ.setdefault("PYGAME_HIDE_SUPPORT_PROMPT", "1")
 os.environ.setdefault("SDL_JOYSTICK_ALLOW_BACKGROUND_EVENTS", "1")
 import pygame  # noqa: E402
 
-VERSION = "1.02"  # 배포 버전. make_release.py가 zip 이름에 쓴다
+VERSION = "1.03"  # 배포 버전. make_release.py가 zip 이름에 쓴다
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CONFIG_PATH = os.path.join(HERE, "config.json")
@@ -49,6 +49,10 @@ DEFAULT_SETTINGS = {
     # 스로틀 중립 구간 폭(전체 행정 대비 비율의 절반). 중립점 ± 이 값.
     "throttle_neutral_half_width": 0.08,
     "slew_deadzone": 0.15,
+    # 롤/피치 반응: 배율(>1이면 끝까지 안 젖혀도 최대), 커브(<1이면 중앙이 예민), 안티 데드존(게임 데드존 건너뛰기)
+    "stick_gain": 1.0,
+    "stick_exponent": 1.0,
+    "stick_anti_deadzone": 0.0,
 }
 
 DEFAULT_HEADTRACK = {
@@ -132,6 +136,16 @@ def rescaled_deadzone(v, size):
         return 0.0
     sign = 1.0 if v > 0 else -1.0
     return sign * (abs(v) - size) / (1.0 - size)
+
+
+def shape_axis(v, deadzone, gain=1.0, exponent=1.0, anti_deadzone=0.0):
+    """비행 축: 데드존(재스케일) → 커브 → 배율 → 안티 데드존. 결과는 -1~1."""
+    v = rescaled_deadzone(v, deadzone)
+    if v == 0.0:
+        return 0.0
+    m = min(1.0, abs(v) ** exponent * gain)
+    m = anti_deadzone + (1.0 - anti_deadzone) * m
+    return m if v > 0 else -m
 
 
 def signed_power(v, e):

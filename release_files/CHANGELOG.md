@@ -1,5 +1,13 @@
 # Changelog / 변경 내역 / 変更履歴
 
+## v1.03 (2026-10-06)
+- EN: More responsive controls. The bridge loop really ran at about 64 Hz because of the default Windows timer (15.6 ms); it now runs at about 190 Hz (5 ms). The status line shows the real rate.
+- EN: New roll/pitch response settings on the Sensitivity tab: gain, curve and anti-deadzone. Defaults keep the previous behavior.
+- KO: 조작 반응 개선. Windows 기본 타이머(15.6ms) 때문에 브리지가 실제로는 약 64Hz로 돌던 것을 약 190Hz(5ms)로 개선. 상태 줄에 실제 주기 표시.
+- KO: 감도 탭에 롤/피치 반응 설정 추가: 감도 배율, 커브, 안티 데드존. 기본값은 기존 동작과 같음.
+- JA: 操作の反応を改善。Windows 標準タイマー（15.6ms）のため実際は約64Hzで動いていたブリッジを約190Hz（5ms）に改善。ステータス行に実際の周期を表示。
+- JA: 感度タブにロール/ピッチの反応設定を追加：感度倍率、カーブ、アンチデッドゾーン。初期値は従来と同じ動作。
+
 ## v1.02 (2026-10-04)
 - EN: README/Nexus: new section for devices that AC8 reads directly (e.g. Thrustmaster TCA/TWCS), which caused mixed inputs. Fix with HidHide (step-by-step guide).
 - EN: Settings window shows a HidHide hint when no devices are found. The bridge warns when two configured devices resolve to the same physical device.
